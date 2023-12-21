@@ -17,6 +17,12 @@ pygame.display.set_caption('Castle Rush')
 clock = pygame.time.Clock()
 FPS = 60
 
+# game variables
+MAX_ENEMIES = 10
+ENEMY_TIMER = 1000
+last_enemy = pygame.time.get_ticks()
+enemies_alive = 0
+
 # load images
 back_ground = pygame.image.load('img/bg.png').convert_alpha()
 castle_full_health = pygame.image.load('img/castle/castle_100.png').convert_alpha()
@@ -148,9 +154,6 @@ crosshair = Crosshair(0.025)
 bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 
-# creating enemies
-enemy_1 = Enemy(enemy_health[0], enemy_animations[0], 200, SCREEN_HEIGHT - 100, 1)
-enemy_group.add(enemy_1)
 
 # game loop
 run = True
@@ -173,6 +176,16 @@ while run:
 
     # draw enemy
     enemy_group.update(screen, castle, bullet_group)
+
+    # create enemies
+    # check if max number of enemies have been reached
+    if len(enemy_group) < MAX_ENEMIES:
+        if pygame.time.get_ticks() - last_enemy > ENEMY_TIMER:
+            # creating enemies
+            enemy = Enemy(enemy_health[0], enemy_animations[0], -100, SCREEN_HEIGHT - 100, 1)
+            enemy_group.add(enemy)
+            # reset enemy timer
+            last_enemy = pygame.time.get_ticks()
 
     # event handler
     for event in pygame.event.get():
