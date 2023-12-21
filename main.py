@@ -22,9 +22,19 @@ FPS = 60
 level = 1
 level_difficulty = 0
 target_difficulty = 1000
+DIFFICULTY_MULTIPLIER = 1.1
+game_over = False
+next_level = False
 ENEMY_TIMER = 1000
 last_enemy = pygame.time.get_ticks()
 enemies_alive = 0
+
+# define colors
+WHITE = (255, 255, 255)
+
+# define font
+font = pygame.font.SysFont('Futura', 30)
+font60 = pygame.font.SysFont('Futura', 60)
 
 # load images
 back_ground = pygame.image.load('img/bg.png').convert_alpha()
@@ -57,9 +67,12 @@ for enemy in enemy_types:
             temp_list.append(img)
         animation_list.append(temp_list)
     enemy_animations.append(animation_list)
-# define colors
-WHITE = (255, 255, 255)
 
+
+# funtion for outputting text onto the screen
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x, y))
 
 # castle class
 class Castle:
@@ -135,7 +148,7 @@ class Crosshair:
         image = pygame.image.load('img/crosshair.png').convert_alpha()
         width = image.get_width()
         height = image.get_height()
-        self.image = pygame.transform.scale(image, (int(width * scale), int(height*scale)))
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
         self.rect = self.image.get_rect()
 
         # hide mouse
@@ -156,7 +169,6 @@ crosshair = Crosshair(0.025)
 # create groups
 bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
-
 
 # game loop
 run = True
@@ -192,7 +204,29 @@ while run:
             last_enemy = pygame.time.get_ticks()
             # increase level difficulty by enemy health
             level_difficulty += enemy_health[e]
-            print(level_difficulty)
+
+    # check if all enemies have been created
+    if level_difficulty >= target_difficulty:
+        # check how many enemies are still alive
+        enemies_alive = 0
+        for e in enemy_group:
+            if e.alive:
+                enemies_alive += 1
+        # if no more enemies alive then level complete
+        if enemies_alive == 0 and next_level == False:
+            next_level = True
+            level_reset_time = pygame.time.get_ticks()
+
+    # move to next level
+    if next_level:
+        draw_text('LEVEL COMPLETE', font60, WHITE, 200, 300)
+        if pygame.time.get_ticks() - level_reset_time > 1500:
+            next_level = False
+            level += 1
+            last_enemy = pygame.time.get_ticks()
+            target_difficulty *= DIFFICULTY_MULTIPLIER
+            level_difficulty = 0
+            enemy_group.empty()
 
     # event handler
     for event in pygame.event.get():
