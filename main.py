@@ -30,6 +30,7 @@ next_level = False
 ENEMY_TIMER = 1000
 last_enemy = pygame.time.get_ticks()
 enemies_alive = 0
+max_towers = 5
 TOWER_COST = 5000
 tower_positions = [
     [SCREEN_WIDTH - 250, SCREEN_HEIGHT - 200],
@@ -307,7 +308,7 @@ while run:
         castle.repair()
     if tower_button.draw(screen):
         # check if there is enough money for tower
-        if castle.money >= TOWER_COST:
+        if castle.money >= TOWER_COST and len(tower_group) < max_towers:  # limit on how many towers a player can build
             tower = Tower(
                 tower_full_health,
                 tower_half_health,
