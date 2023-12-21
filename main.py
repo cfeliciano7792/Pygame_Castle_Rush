@@ -56,6 +56,8 @@ class Castle:
         self.health = 1000
         self.max_health = self.health
         self.fired = False
+        self.money = 0
+        self.score = 0
 
         width = castle_full_health.get_width()
         height = castle_full_health.get_height()

@@ -19,22 +19,27 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = (x, y)
 
     def update(self, surface, target, bullet_group):
-        # check for collision with bullets
-        if pygame.sprite.spritecollide(self, bullet_group, True):
-            # lower enemy health
-            self.health -= 25
+        if self.alive:
 
-        # check if enemy has reached the castle
-        if self.rect.right > target.rect.left:
-            self.update_action(1)
-        # move enemy
-        if self.action == 0:
-            # update rectangle position
-            self.rect.x += self.speed
+            # check for collision with bullets
+            if pygame.sprite.spritecollide(self, bullet_group, True):
+                # lower enemy health
+                self.health -= 25
 
-        # check if health has reached 0
-        if self.health <= 0:
-            self.update_action(2)
+            # check if enemy has reached the castle
+            if self.rect.right > target.rect.left:
+                self.update_action(1)
+            # move enemy
+            if self.action == 0:
+                # update rectangle position
+                self.rect.x += self.speed
+
+            # check if health has reached 0
+            if self.health <= 0:
+                target.money += 100
+                target.score += 100
+                self.alive = False
+                self.update_action(2)
 
         self.update_animation()
         # draw image on screen
