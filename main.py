@@ -228,7 +228,7 @@ while run:
 
     # draw buttons
     if repair_button.draw(screen):
-
+        castle.repair()
     armor_button.draw(screen)
 
     # create enemies
