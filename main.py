@@ -30,6 +30,14 @@ next_level = False
 ENEMY_TIMER = 1000
 last_enemy = pygame.time.get_ticks()
 enemies_alive = 0
+TOWER_COST = 5000
+tower_positions = [
+    [SCREEN_WIDTH - 250, SCREEN_HEIGHT - 200],
+    [SCREEN_WIDTH - 200, SCREEN_HEIGHT - 150],
+    [SCREEN_WIDTH - 150, SCREEN_HEIGHT - 150],
+    [SCREEN_WIDTH - 100, SCREEN_HEIGHT - 150],
+    [SCREEN_WIDTH - 50, SCREEN_HEIGHT - 100],
+]
 
 # define colors
 WHITE = (255, 255, 255)
@@ -81,6 +89,7 @@ for enemy in enemy_types:
 repair_img = pygame.image.load('img/repair.png').convert_alpha()
 # armor image
 armor_img = pygame.image.load('img/armour.png').convert_alpha()
+
 
 
 # funtion for outputting text onto the screen
@@ -199,6 +208,13 @@ class Tower(pygame.sprite.Sprite):
                 bullet = Bullet(bullet_img, self.rect.midleft[0], self.rect.midleft[1], self.angle)
                 bullet_group.add(bullet)
 
+        if castle.health >= 500:
+            self.image = self.image100
+        elif castle.health >= 250:
+            self.image = self.image50
+        else:
+            self.image = self.image25
+
 
 
 
@@ -250,16 +266,13 @@ crosshair = Crosshair(0.025)
 
 # create buttons
 repair_button = button.Button(SCREEN_WIDTH - 220, 10, repair_img, .5)
+tower_button = button.Button(SCREEN_WIDTH - 140, 10, tower_full_health, .1)
 armor_button = button.Button(SCREEN_WIDTH - 75, 10, armor_img, 1.4)
 
 # create groups
 tower_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
-
-# temp tower test code
-tower = Tower(tower_full_health, tower_half_health, tower_quarter_health, SCREEN_WIDTH - 350, SCREEN_HEIGHT - 200, 0.2)
-tower_group.add(tower)
 
 # game loop
 run = True
@@ -292,6 +305,19 @@ while run:
     # draw buttons
     if repair_button.draw(screen):
         castle.repair()
+    if tower_button.draw(screen):
+        # check if there is enough money for tower
+        if castle.money >= TOWER_COST:
+            tower = Tower(
+                tower_full_health,
+                tower_half_health,
+                tower_quarter_health,
+                tower_positions[len(tower_group)][0],  # checks to see how many towers are placed so game knows
+                tower_positions[len(tower_group)][1],  # where the next tower should be built
+                0.2
+            )
+            tower_group.add(tower)
+            castle.money -= TOWER_COST
     if armor_button.draw(screen):
         castle.repair()
 
