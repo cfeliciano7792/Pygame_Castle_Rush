@@ -159,6 +159,21 @@ class Castle:
             self.money -= 500
 
 
+# tower class
+class Tower(pygame.sprite.Sprite)
+    def __init__(self, image100, image50, image25, x, y, scale):
+        pygame.sprite.Sprite.__init__(self)
+        width = castle_full_health.get_width()
+        height = castle_full_health.get_height()
+
+        self.image100 = pygame.transform.scale(image100, (int(width * scale), int(height * scale)))
+        self.image50 = pygame.transform.scale(image50, (int(width * scale), int(height * scale)))
+        self.image25 = pygame.transform.scale(image25, (int(width * scale), int(height * scale)))
+        self.rect = self.image100.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+
 #  bullet class
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, image, x, y, angle):
