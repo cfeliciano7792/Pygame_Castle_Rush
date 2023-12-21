@@ -31,6 +31,7 @@ enemies_alive = 0
 
 # define colors
 WHITE = (255, 255, 255)
+GREY = (100, 100, 100)
 
 # define font
 font = pygame.font.SysFont('Futura', 30)
@@ -73,6 +74,11 @@ for enemy in enemy_types:
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
+
+# funtion to show player stats
+def show_info():
+    draw_text('Money: ' + str(castle.money), font, GREY, 10, 10)
+    draw_text('Score: ' + str(castle.score), font, GREY, 180, 10)
 
 # castle class
 class Castle:
@@ -191,6 +197,9 @@ while run:
 
     # draw enemy
     enemy_group.update(screen, castle, bullet_group)
+
+    # show player stats
+    show_info()
 
     # create enemies
     # check if max number of enemies have been reached
