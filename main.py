@@ -77,10 +77,12 @@ repair_img = pygame.image.load('img/repair.png').convert_alpha()
 # armor image
 armor_img = pygame.image.load('img/armour.png').convert_alpha()
 
+
 # funtion for outputting text onto the screen
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
+
 
 # funtion to show player stats
 def show_info():
@@ -88,7 +90,9 @@ def show_info():
     draw_text('Score: ' + str(castle.score), font, GREY, 180, 10)
     draw_text('High Score: ' + str(high_score), font, GREY, 180, 30)
     draw_text('Level: ' + str(level), font, GREY, SCREEN_WIDTH // 2, 10)
-    draw_text('Health: ' + str(castle.health) + " / " + str(castle.max_health), font, GREY, SCREEN_WIDTH - 230, SCREEN_HEIGHT - 50)
+    draw_text('Health: ' + str(castle.health) + " / " + str(castle.max_health), font, GREY, SCREEN_WIDTH - 230,
+              SCREEN_HEIGHT - 50)
+
 
 # castle class
 class Castle:
@@ -116,7 +120,7 @@ class Castle:
         y_distance = -(pos[1] - self.rect.midleft[1])
         self.angle = math.degrees(math.atan2(y_distance, x_distance))
         # get mouse click
-        if pygame.mouse.get_pressed()[0] and self.fired is False:
+        if pygame.mouse.get_pressed()[0] and self.fired is False and pos[1] > 70:
             self.fired = True
             bullet = Bullet(bullet_img, self.rect.midleft[0], self.rect.midleft[1], self.angle)
             bullet_group.add(bullet)
@@ -134,6 +138,13 @@ class Castle:
             self.image = self.image25
 
         screen.blit(self.image, self.rect)
+
+    def repair(self):
+        if self.money >= 1000:
+            self.health += 500
+            self.money -= 1000
+            if castle.health > castle.max_health:
+                castle.health = castle.max_health
 
 
 #  bullet class
@@ -216,7 +227,8 @@ while run:
     show_info()
 
     # draw buttons
-    repair_button.draw(screen)
+    if repair_button.draw(screen):
+
     armor_button.draw(screen)
 
     # create enemies
