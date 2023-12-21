@@ -146,6 +146,11 @@ class Castle:
             if castle.health > castle.max_health:
                 castle.health = castle.max_health
 
+    def armor(self):
+        if self.money >= 500:
+            self.max_health += 250
+            self.money -= 500
+
 
 #  bullet class
 class Bullet(pygame.sprite.Sprite):
@@ -229,7 +234,8 @@ while run:
     # draw buttons
     if repair_button.draw(screen):
         castle.repair()
-    armor_button.draw(screen)
+    if armor_button.draw(screen):
+        castle.repair()
 
     # create enemies
     # check if max number of enemies have been reached
