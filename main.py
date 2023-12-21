@@ -1,6 +1,7 @@
 # import libraries
 import pygame
 import math
+import random
 from enemy import Enemy
 
 # initialize pygame
@@ -18,7 +19,9 @@ clock = pygame.time.Clock()
 FPS = 60
 
 # game variables
-MAX_ENEMIES = 10
+level = 1
+level_difficulty = 0
+target_difficulty = 1000
 ENEMY_TIMER = 1000
 last_enemy = pygame.time.get_ticks()
 enemies_alive = 0
@@ -35,8 +38,8 @@ bullet_img = pygame.transform.scale(bullet_img, (int(bullet_width * 0.075), int(
 
 # load enemy images
 enemy_animations = []
-enemy_types = ['knight']
-enemy_health = [75]
+enemy_types = ['knight', 'goblin', 'purple_goblin', 'red_goblin']
+enemy_health = [75, 100, 125, 150]
 
 animation_types = ['walk', 'attack', 'death']
 for enemy in enemy_types:
@@ -179,13 +182,17 @@ while run:
 
     # create enemies
     # check if max number of enemies have been reached
-    if len(enemy_group) < MAX_ENEMIES:
+    if level_difficulty < target_difficulty:
         if pygame.time.get_ticks() - last_enemy > ENEMY_TIMER:
             # creating enemies
-            enemy = Enemy(enemy_health[0], enemy_animations[0], -100, SCREEN_HEIGHT - 100, 1)
+            e = random.randint(0, len(enemy_types) - 1)
+            enemy = Enemy(enemy_health[e], enemy_animations[e], -100, SCREEN_HEIGHT - 100, 1)
             enemy_group.add(enemy)
             # reset enemy timer
             last_enemy = pygame.time.get_ticks()
+            # increase level difficulty by enemy health
+            level_difficulty += enemy_health[e]
+            print(level_difficulty)
 
     # event handler
     for event in pygame.event.get():
