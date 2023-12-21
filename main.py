@@ -3,6 +3,7 @@ import pygame
 import math
 import random
 from enemy import Enemy
+import button
 
 # initialize pygame
 pygame.init()
@@ -70,6 +71,11 @@ for enemy in enemy_types:
         animation_list.append(temp_list)
     enemy_animations.append(animation_list)
 
+# button images
+# repair image
+repair_img = pygame.image.load('img/repair.png').convert_alpha()
+# armor image
+armor_img = pygame.image.load('img/armour.png').convert_alpha()
 
 # funtion for outputting text onto the screen
 def draw_text(text, font, text_col, x, y):
@@ -176,6 +182,10 @@ castle = Castle(castle_full_health, castle_half_health, castle_quarter_health, S
 # create crosshair
 crosshair = Crosshair(0.025)
 
+# create buttons
+repair_button = button.Button(SCREEN_WIDTH - 220, 10, repair_img, .5)
+armor_button = button.Button(SCREEN_WIDTH - 75, 10, armor_img, 1.1)
+
 # create groups
 bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
@@ -204,6 +214,10 @@ while run:
 
     # show player stats
     show_info()
+
+    # draw buttons
+    repair_button.draw(screen)
+    armor_button.draw(screen)
 
     # create enemies
     # check if max number of enemies have been reached
