@@ -19,5 +19,17 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = (x,y)
 
     def update(self, surface):
+
+        self.update_animation()
+        # draw image on screen
         surface.blit(self.image, self.rect)
 
+    def update_animation(self):
+        # define animation cooldown - How many milliseconds need to pass before moving to the next image
+        ANIMATION_COOLDOWN = 50
+        # update image based on current action
+        self.image = self.animation_list[self.action][self.frame_index]
+        # check if enough time has passed since last update
+        if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
+            self.update_time = pygame.time.get_ticks()
+            self.frame_index += 1
