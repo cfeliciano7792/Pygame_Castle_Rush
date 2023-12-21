@@ -33,3 +33,5 @@ class Enemy(pygame.sprite.Sprite):
         if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
             self.update_time = pygame.time.get_ticks()
             self.frame_index += 1
+            if self.frame_index > 19:
+                self.frame_index = 0
