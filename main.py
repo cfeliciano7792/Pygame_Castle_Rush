@@ -140,7 +140,7 @@ class Castle:
         screen.blit(self.image, self.rect)
 
     def repair(self):
-        if self.money >= 1000:
+        if self.money >= 1000 and self.health < self.max_health:
             self.health += 500
             self.money -= 1000
             if castle.health > castle.max_health:
