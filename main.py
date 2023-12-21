@@ -19,6 +19,9 @@ FPS = 60
 back_ground = pygame.image.load('img/bg.png').convert_alpha()
 castle_full_health = pygame.image.load('img/castle/castle_100.png').convert_alpha()
 
+# define colors
+WHITE = (255, 255, 255)
+
 
 # castle class
 class Castle:
@@ -34,9 +37,13 @@ class Castle:
         self.rect.x = x
         self.rect.y = y
 
+    def shoot(self):
+        # retrieves coordinates of mouse position
+        pos = pygame.mouse.get_pos()
+        pygame.draw.line(screen, WHITE, (self.rect.midleft[0], self.rect.midleft[1]), pos)
+
     def draw(self):
         self.image = self.image100
-
         screen.blit(self.image, self.rect)
 
 
@@ -51,6 +58,7 @@ while run:
 
     # draw castle
     castle.draw()
+    castle.shoot()
 
     # event handler
     for event in pygame.event.get():
