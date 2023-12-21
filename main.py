@@ -121,8 +121,28 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y += self.dy
 
 
+class Crosshair:
+    def __init__(self, scale):
+        image = pygame.image.load('img/crosshair.png').convert_alpha()
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height*scale)))
+        self.rect = self.image.get_rect()
+
+        # hide mouse
+        pygame.mouse.set_visible(False)
+
+    def draw(self):
+        mx, my = pygame.mouse.get_pos()
+        self.rect.center = (mx, my)
+        screen.blit(self.image, self.rect)
+
+
 castle = Castle(castle_full_health, castle_half_health, castle_quarter_health, SCREEN_WIDTH - 250, SCREEN_HEIGHT - 300,
                 0.2)
+
+# create crosshair
+crosshair = Crosshair(0.025)
 
 # create groups
 bullet_group = pygame.sprite.Group()
@@ -143,6 +163,9 @@ while run:
     # draw castle
     castle.draw()
     castle.shoot()
+
+    # draw crosshair
+    crosshair.draw()
 
     # draw bullets
     bullet_group.update()
