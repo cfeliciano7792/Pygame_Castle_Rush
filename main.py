@@ -160,18 +160,46 @@ class Castle:
 
 
 # tower class
-class Tower(pygame.sprite.Sprite)
+class Tower(pygame.sprite.Sprite):
     def __init__(self, image100, image50, image25, x, y, scale):
         pygame.sprite.Sprite.__init__(self)
-        width = castle_full_health.get_width()
-        height = castle_full_health.get_height()
+
+        self.got_target = False
+        self.angle = 0
+        self.last_shot = pygame.time.get_ticks()
+
+        width = image100.get_width()
+        height = image100.get_height()
 
         self.image100 = pygame.transform.scale(image100, (int(width * scale), int(height * scale)))
         self.image50 = pygame.transform.scale(image50, (int(width * scale), int(height * scale)))
         self.image25 = pygame.transform.scale(image25, (int(width * scale), int(height * scale)))
+        self.image = self.image100
         self.rect = self.image100.get_rect()
         self.rect.x = x
         self.rect.y = y
+
+    def update(self, enemy_group):
+        self.got_target = False
+        for e in enemy_group:
+            if e.alive:
+                target_x, target_y = e.rect.midbottom
+                self.got_target = True
+                break
+
+        if self.got_target:
+            x_distance = target_x - self.rect.midleft[0]
+            y_distance = -(target_y - self.rect.midleft[1])
+            self.angle = math.degrees(math.atan2(y_distance, x_distance))
+
+            shot_cooldown = 1500
+            # fire bullet
+            if pygame.time.get_ticks() - self.last_shot > shot_cooldown:
+                self.last_shot = pygame.time.get_ticks()
+                bullet = Bullet(bullet_img, self.rect.midleft[0], self.rect.midleft[1], self.angle)
+                bullet_group.add(bullet)
+
+
 
 
 #  bullet class
@@ -225,8 +253,13 @@ repair_button = button.Button(SCREEN_WIDTH - 220, 10, repair_img, .5)
 armor_button = button.Button(SCREEN_WIDTH - 75, 10, armor_img, 1.4)
 
 # create groups
+tower_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
+
+# temp tower test code
+tower = Tower(tower_full_health, tower_half_health, tower_quarter_health, SCREEN_WIDTH - 350, SCREEN_HEIGHT - 200, 0.2)
+tower_group.add(tower)
 
 # game loop
 run = True
@@ -239,6 +272,9 @@ while run:
     # draw castle
     castle.draw()
     castle.shoot()
+    # draw towers
+    tower_group.draw(screen)
+    tower_group.update(enemy_group)
 
     # draw crosshair
     crosshair.draw()
