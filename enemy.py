@@ -18,7 +18,11 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = pygame.Rect(0, 0, 25, 40)
         self.rect.center = (x, y)
 
-    def update(self, surface, target):
+    def update(self, surface, target, bullet_group):
+        # check for collision with bullets
+        if pygame.sprite.spritecollide(self, bullet_group, True):
+            # lower enemy health
+            self.health -= 25
 
         # check if enemy has reached the castle
         if self.rect.right > target.rect.left:
@@ -27,6 +31,11 @@ class Enemy(pygame.sprite.Sprite):
         if self.action == 0:
             # update rectangle position
             self.rect.x += self.speed
+
+        # check if health has reached 0
+        if self.health <= 0:
+            self.update_action(2)
+
         self.update_animation()
         # draw image on screen
         surface.blit(self.image, (self.rect.x - 10, self.rect.y - 15))
@@ -42,7 +51,10 @@ class Enemy(pygame.sprite.Sprite):
             self.frame_index += 1
         # resets animation
         if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index = 0
+            if self.action == 2:
+                self.frame_index = len(self.animation_list[self.action]) - 1
+            else:
+                self.frame_index = 0
 
     def update_action(self, new_action):
         # check if new action is different to the previous one
