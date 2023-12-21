@@ -20,6 +20,8 @@ FPS = 60
 # load images
 back_ground = pygame.image.load('img/bg.png').convert_alpha()
 castle_full_health = pygame.image.load('img/castle/castle_100.png').convert_alpha()
+castle_half_health = pygame.image.load('img/castle/castle_50.png').convert_alpha()
+castle_quarter_health = pygame.image.load('img/castle/castle_25.png').convert_alpha()
 bullet_img = pygame.image.load('img/bullet.png').convert_alpha()
 bullet_width = bullet_img.get_width()
 bullet_height = bullet_img.get_height()
@@ -52,7 +54,7 @@ WHITE = (255, 255, 255)
 
 # castle class
 class Castle:
-    def __init__(self, image100, x, y, scale):
+    def __init__(self, image100, image50, image25, x, y, scale):
         self.health = 1000
         self.max_health = self.health
         self.fired = False
@@ -63,6 +65,8 @@ class Castle:
         height = castle_full_health.get_height()
 
         self.image100 = pygame.transform.scale(image100, (int(width * scale), int(height * scale)))
+        self.image50 = pygame.transform.scale(image50, (int(width * scale), int(height * scale)))
+        self.image25 = pygame.transform.scale(image25, (int(width * scale), int(height * scale)))
         self.rect = self.image100.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -82,9 +86,15 @@ class Castle:
         if not pygame.mouse.get_pressed()[0]:
             self.fired = False
 
-
     def draw(self):
-        self.image = self.image100
+        # check which castle image to use based on current health
+        if self.health >= 500:
+            self.image = self.image100
+        elif self.health >= 250:
+            self.image = self.image50
+        else:
+            self.image = self.image25
+
         screen.blit(self.image, self.rect)
 
 
@@ -104,14 +114,15 @@ class Bullet(pygame.sprite.Sprite):
 
     def update(self):
         # check if bullet has gone off-screen
-        if self.rect.right < 0 or self.rect.left > SCREEN_WIDTH or self.rect.bottom <0 or self.rect.top > SCREEN_HEIGHT:
+        if self.rect.right < 0 or self.rect.left > SCREEN_WIDTH or self.rect.bottom < 0 or self.rect.top > SCREEN_HEIGHT:
             self.kill()
         # move bullets
         self.rect.x += self.dx
         self.rect.y += self.dy
 
 
-castle = Castle(castle_full_health, SCREEN_WIDTH - 250, SCREEN_HEIGHT - 300, 0.2)
+castle = Castle(castle_full_health, castle_half_health, castle_quarter_health, SCREEN_WIDTH - 250, SCREEN_HEIGHT - 300,
+                0.2)
 
 # create groups
 bullet_group = pygame.sprite.Group()
