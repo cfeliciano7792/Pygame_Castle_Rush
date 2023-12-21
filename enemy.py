@@ -16,6 +16,7 @@ class Enemy(pygame.sprite.Sprite):
         # select starting image
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
+        self.rect.center = (x,y)
 
     def update(self, surface):
         surface.blit(self.image, self.rect)

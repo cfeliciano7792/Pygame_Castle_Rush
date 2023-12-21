@@ -1,6 +1,7 @@
 # import libraries
 import pygame
 import math
+from enemy import Enemy
 
 # initialize pygame
 pygame.init()
@@ -112,6 +113,11 @@ castle = Castle(castle_full_health, SCREEN_WIDTH - 250, SCREEN_HEIGHT - 300, 0.2
 
 # create groups
 bullet_group = pygame.sprite.Group()
+enemy_group = pygame.sprite.Group()
+
+# creating enemies
+enemy_1 = Enemy(enemy_health[0], enemy_animations[0], 200, SCREEN_HEIGHT - 100, 1)
+enemy_group.add(enemy_1)
 
 # game loop
 run = True
@@ -128,6 +134,9 @@ while run:
     # draw bullets
     bullet_group.update()
     bullet_group.draw(screen)
+
+    # draw enemy
+    enemy_group.update(screen)
 
     # event handler
     for event in pygame.event.get():
