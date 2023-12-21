@@ -92,6 +92,8 @@ def show_info():
     draw_text('Level: ' + str(level), font, GREY, SCREEN_WIDTH // 2, 10)
     draw_text('Health: ' + str(castle.health) + " / " + str(castle.max_health), font, GREY, SCREEN_WIDTH - 230,
               SCREEN_HEIGHT - 50)
+    draw_text('1000', font, GREY, SCREEN_WIDTH - 220, 60)
+    draw_text('500', font, GREY, SCREEN_WIDTH - 70, 60)
 
 
 # castle class
@@ -200,7 +202,7 @@ crosshair = Crosshair(0.025)
 
 # create buttons
 repair_button = button.Button(SCREEN_WIDTH - 220, 10, repair_img, .5)
-armor_button = button.Button(SCREEN_WIDTH - 75, 10, armor_img, 1.1)
+armor_button = button.Button(SCREEN_WIDTH - 75, 10, armor_img, 1.4)
 
 # create groups
 bullet_group = pygame.sprite.Group()
