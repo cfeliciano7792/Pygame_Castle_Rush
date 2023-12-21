@@ -24,6 +24,27 @@ bullet_width = bullet_img.get_width()
 bullet_height = bullet_img.get_height()
 bullet_img = pygame.transform.scale(bullet_img, (int(bullet_width * 0.075), int(bullet_height * 0.075)))
 
+# load enemy images
+enemy_animations = []
+enemy_types = ['knight']
+enemy_health = [75]
+
+animation_types = ['walk', 'attack', 'death']
+for enemy in enemy_types:
+    # load animations
+    animation_list = []
+    for animation in animation_types:
+        # reset temp list of images
+        temp_list = []
+        num_of_frames = 20
+        for i in range(num_of_frames):
+            img = pygame.image.load(f'img/enemies/{enemy}/{animation}/{i}.png').convert_alpha()
+            enemy_width = img.get_width()
+            enemy_height = img.get_height()
+            img = pygame.transform.scale(img, (int(enemy_width * 0.2), int(enemy_height * 0.2)))
+            temp_list.append(img)
+        animation_list.append(temp_list)
+    enemy_animations.append(animation_list)
 # define colors
 WHITE = (255, 255, 255)
 
