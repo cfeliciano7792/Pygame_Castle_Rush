@@ -20,6 +20,7 @@ FPS = 60
 
 # game variables
 level = 1
+high_score = 0
 level_difficulty = 0
 target_difficulty = 1000
 DIFFICULTY_MULTIPLIER = 1.1
@@ -79,6 +80,9 @@ def draw_text(text, font, text_col, x, y):
 def show_info():
     draw_text('Money: ' + str(castle.money), font, GREY, 10, 10)
     draw_text('Score: ' + str(castle.score), font, GREY, 180, 10)
+    draw_text('High Score: ' + str(high_score), font, GREY, 180, 30)
+    draw_text('Level: ' + str(level), font, GREY, SCREEN_WIDTH // 2, 10)
+    draw_text('Health: ' + str(castle.health) + " / " + str(castle.max_health), font, GREY, SCREEN_WIDTH - 230, SCREEN_HEIGHT - 50)
 
 # castle class
 class Castle:
