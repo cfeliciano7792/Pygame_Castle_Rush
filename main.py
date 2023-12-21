@@ -30,14 +30,13 @@ next_level = False
 ENEMY_TIMER = 1000
 last_enemy = pygame.time.get_ticks()
 enemies_alive = 0
-max_towers = 5
+max_towers = 4
 TOWER_COST = 5000
 tower_positions = [
     [SCREEN_WIDTH - 250, SCREEN_HEIGHT - 200],
     [SCREEN_WIDTH - 200, SCREEN_HEIGHT - 150],
     [SCREEN_WIDTH - 150, SCREEN_HEIGHT - 150],
     [SCREEN_WIDTH - 100, SCREEN_HEIGHT - 150],
-    [SCREEN_WIDTH - 50, SCREEN_HEIGHT - 100],
 ]
 
 # define colors
@@ -92,7 +91,6 @@ repair_img = pygame.image.load('img/repair.png').convert_alpha()
 armor_img = pygame.image.load('img/armour.png').convert_alpha()
 
 
-
 # funtion for outputting text onto the screen
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -108,6 +106,7 @@ def show_info():
     draw_text('Health: ' + str(castle.health) + " / " + str(castle.max_health), font, GREY, SCREEN_WIDTH - 230,
               SCREEN_HEIGHT - 50)
     draw_text('1000', font, GREY, SCREEN_WIDTH - 220, 60)
+    draw_text(str(TOWER_COST), font, GREY, SCREEN_WIDTH - 150, 60)
     draw_text('500', font, GREY, SCREEN_WIDTH - 70, 60)
 
 
@@ -117,7 +116,7 @@ class Castle:
         self.health = 1000
         self.max_health = self.health
         self.fired = False
-        self.money = 0
+        self.money = 1000000
         self.score = 0
 
         width = castle_full_health.get_width()
@@ -193,7 +192,7 @@ class Tower(pygame.sprite.Sprite):
         self.got_target = False
         for e in enemy_group:
             if e.alive:
-                target_x, target_y = e.rect.midbottom
+                target_x, target_y = e.rect.midright
                 self.got_target = True
                 break
 
@@ -202,7 +201,7 @@ class Tower(pygame.sprite.Sprite):
             y_distance = -(target_y - self.rect.midleft[1])
             self.angle = math.degrees(math.atan2(y_distance, x_distance))
 
-            shot_cooldown = 1500
+            shot_cooldown = 1000
             # fire bullet
             if pygame.time.get_ticks() - self.last_shot > shot_cooldown:
                 self.last_shot = pygame.time.get_ticks()
@@ -215,8 +214,6 @@ class Tower(pygame.sprite.Sprite):
             self.image = self.image50
         else:
             self.image = self.image25
-
-
 
 
 #  bullet class
