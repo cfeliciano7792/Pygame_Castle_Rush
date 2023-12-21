@@ -44,6 +44,11 @@ back_ground = pygame.image.load('img/bg.png').convert_alpha()
 castle_full_health = pygame.image.load('img/castle/castle_100.png').convert_alpha()
 castle_half_health = pygame.image.load('img/castle/castle_50.png').convert_alpha()
 castle_quarter_health = pygame.image.load('img/castle/castle_25.png').convert_alpha()
+
+tower_full_health = pygame.image.load('img/tower/tower_100.png').convert_alpha()
+tower_half_health = pygame.image.load('img/tower/tower_50.png').convert_alpha()
+tower_quarter_health = pygame.image.load('img/tower/tower_25.png').convert_alpha()
+
 bullet_img = pygame.image.load('img/bullet.png').convert_alpha()
 bullet_width = bullet_img.get_width()
 bullet_height = bullet_img.get_height()
