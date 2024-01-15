@@ -1,3 +1,3 @@
 Defend your castle against waves of enemies!
 
-Download Castle_Rush.zip to be able to play on your pc!
+Play the game here: https://cfeliciano.itch.io/castle-rush
